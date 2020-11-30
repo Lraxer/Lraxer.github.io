@@ -23,7 +23,7 @@ STBF是Bloom Filter的扩展。Bloom Filter是$m$ bits，STBF就是$m$个cell。
 
 和Bloom Filter一样，STBF使用$k$个哈希函数做映射。如果有两个item被映射到了同一个cell（发生了冲突），那么把$C_{iF}$置0，$C_{iR}$和$C_{iP}$所有位置1。
 
-<img src="Space-Time Bloom Filter.jpg" style="zoom:67%;" />
+{{< figure src="Space-Time Bloom Filter.jpg" height="550" width="550">}}
 
 ## Raptor Code
 
@@ -68,7 +68,9 @@ PIE算法分为两个阶段：
 
 经过$T$个时间窗口，就建立了$T$个STBF。下面根据论文给出的例子讲解。
 
-<img src="Cell Line.jpg" style="zoom:80%;" />
+<!-- FIGURE -->
+
+{{< figure src="Cell Line.jpg" height="350" width="350">}}
 
 假设一个STBF长度为$m$-bit，新定义cell line，包含$STBF_1[x], STBF_2[x], \dots , STBF_T[x]$，其中$1 \le x \le m$。
 

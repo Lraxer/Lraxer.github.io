@@ -13,9 +13,13 @@ Small-Space算法建立一个"hash-based filter"，通过给定哈希函数$h(d,
 
 ### 初始化与更新
 
-![](Small-Space-Algorithm1.jpg)
+<!-- FIGURE -->
 
-![](Small-Space-Algorithm2.jpg)
+{{< figure src="Small-Space-Algorithm1.jpg" height="750" width="750">}}
+
+<!-- FIGURE -->
+
+{{< figure src="Small-Space-Algorithm2.jpg" height="750" width="750">}}
 
 $h(d,t)$的输出结果为$(0,1)$。值得说明的是，在同一个时间窗口$t$出现的相同item $d$，由于$h(d,t)$是相同的数，所以不会出现重复统计同一个时间窗口相同item的情况。
 
@@ -32,7 +36,9 @@ $d$代表一个item，$t$代表当前的时间窗口。$S$代表取样的item集
 
 ### 检测persistent items
 
-![](Small-Space-Algorithm3.jpg)
+<!-- FIGURE -->
+
+{{< figure src="Small-Space-Algorithm3.jpg" height="550" width="550">}}
 
 这个算法没有仔细看，大致就是对统计的$n_d$加一点修正，与给定的persistent阈值$T$作比较。
 
@@ -42,9 +48,13 @@ $d$代表一个item，$t$代表当前的时间窗口。$S$代表取样的item集
 
 ### 初始化与更新
 
-![](Small-Space-Algorithm4.jpg)
+<!-- FIGURE -->
 
-![](Small-Space-Algorithm5.jpg)
+{{< figure src="Small-Space-Algorithm4.jpg" height="750" width="750">}}
+
+<!-- FIGURE -->
+
+{{< figure src="Small-Space-Algorithm5.jpg" height="750" width="750">}}
 
 这个算法是fixed window版本的扩展。
 
@@ -63,13 +73,17 @@ $d$代表一个item，$t$代表当前的时间窗口。$S$代表取样的item集
 
 ### 丢弃old items
 
-![](Small-Space-Algorithm6.jpg)
+<!-- FIGURE -->
+
+{{< figure src="Small-Space-Algorithm6.jpg" height="750" width="750">}}
 
 更新算法使得丢弃超出$n$个时间窗口的old items非常简单。
 
 #### 检测persistent items
 
-![](Small-Space-Algorithm7.jpg)
+<!-- FIGURE -->
+
+{{< figure src="Small-Space-Algorithm7.jpg" height="750" width="750">}}
 
 $S_{cur}$代表找到当前$n$个时间窗口里，包含item $d$最早出现的时间窗口$t'$的元组集合。
 
