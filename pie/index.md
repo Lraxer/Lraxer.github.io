@@ -90,7 +90,7 @@ PIE算法分为两个阶段：
 
 1. 计算恢复出的item  ID的hash-print，与group中的hash-prints比较是否相等。
 
-2. （通过第一部验证后）使用$k$个哈希函数计算恢复的ID会被映射到的cell。
+2. （通过第一步验证后）使用$k$个哈希函数计算恢复的ID会被映射到的cell。
 
     如果和group中的cell都冲突了，所有这些cell的Raptor code都相同，所有这些cell的hash-print都和恢复出的item ID的hash-print相同才算验证通过。
 
