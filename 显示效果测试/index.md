@@ -3,7 +3,7 @@
 
 # 显示效果测试
 
-```clike
+```c++
 #include <iostream>
 
 int main() {
@@ -11,22 +11,6 @@ int main() {
 	return 0;
 }
 ```
-
-```html
-<div role="dialog" aria-labelledby="dialog-heading">
-  <button aria-label="close">x</button>
-  <h2 id="dialog-heading">Confirmation</h2>
-  <p>Press Okay to confirm or Cancel</p>
-  <button>Okay</button>
-  <button>Cancel</button>
-</div>
-```
-
-
-
-> 这是一段引言
->
-> 楼下一个男人病得要死，那间壁的一家唱着留声机；对面是弄孩子。楼上有两人狂笑；还有打牌声。河中的船上有女人哭着她死去的母亲。 **人类的悲欢并不相通，我只觉得他们吵闹**。
 
 ==HIGHLIGHT== (not working)
 
@@ -48,3 +32,25 @@ $$
 {\color{red}E}={\color{blue}mc^2}
 $$
 ![](p(185).jpg)
+
+矩阵和其他环境必须写到一行，反斜线必须是双倍的。
+$$
+A =
+\begin{bmatrix} a_{i1}^1 & a_{i1}^2 & \cdots & a_{i1}^l \\\\ a_{i2}^1 & a_{i2}^2 & \cdots & a_{i2}^l \\\\ \vdots & \vdots & & \vdots \\\\ a_{ir}^1 & a_{ir}^2 & \cdots & a_{ir}^l \\\\ \end{bmatrix}
+$$
+图像大小建议：
+
+{{< figure src="p(185).jpg" height="350" width="350">}}
+
+{{< figure src="p(185).jpg" height="550" width="550">}}
+
+{{< figure src="p(185).jpg" height="750" width="750">}}
+
+斜体加上括号有可能不会被渲染！比如
+
+```
+*(123)*
+*（123）*
+```
+
+遇到过不被渲染的情况。所以尽量把括号写到外面。

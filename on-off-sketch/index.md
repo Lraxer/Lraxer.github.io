@@ -29,12 +29,16 @@ Bloom Filter是用来处理membership问题的。CM Sketch是用来处理frequen
 1. 判断$e$是否在Bloom Filter中。如果在，说明当前时间窗口$e$已经出现过，不做处理；如果不在，就把$e$插入到Bloom Filter中，执行下一步。
 2. 把$e$插入到CM sketch中。
 
+<!-- FIGURE -->
+
 {{< figure src="Figure1.jpg" height="350" width="350">}}
 
 理想状况下，这个算法可以实现persistence estimation。通过Bloom Filter保证一个时间窗口一个item最多被记录一次，通过CM Sketch在所有时间窗口计算persistence值。但是同样，它有很大的局限性。
 
 1. Bloom Filter会出现假阳性 (false positive)。这个时间窗口中没有出现的item被错误地认为是已经出现过。
 2. CM sketch的哈希碰撞会导致persistence被严重高估。如下图，3个item被映射到同一位置，本来3个item的persistence应该各增加1，现在各增加了3。
+
+<!-- FIGURE -->
 
 {{< figure src="Figure2.jpg" title="Overestimation" height="350" width="350">}}
 
@@ -49,6 +53,8 @@ Bloom Filter是用来处理membership问题的。CM Sketch是用来处理frequen
 On-Off Sketch提出了新的数据结构。On-Off sketch由$d$个数组组成，每一个数组包括$l$个计数器。其中每个计数器都有一个状态域 (state field)，有On和Off两个状态。第$i$个数组的第$j$个计数器表示为$C_i[j]$。
 
 在每个时间窗口最后，把所有的state field设置为On。
+
+<!-- FIGURE -->
 
 {{< figure src="Figure3.jpg" height="350" width="350">}}
 
@@ -105,6 +111,8 @@ $$
 
 初始化每一个计数器的state field为On，所有计数器值为0。
 
+<!-- FIGURE -->
+
 {{< figure src="Figure4.jpg" height="350" width="350">}}
 
 #### 插入 {#fpi_insert}
@@ -125,7 +133,7 @@ $$
 
 #### 算法分析
 
-只用了一个计数器数组和它们附加的桶。减小数组的数量可以提升吞吐量*（关于吞吐量的内容我还不太明白原因）*。使用附加的桶，可以做到分离persistent items和non-persistent items，并且只记录item iD。如果一个item的persistence足够高，那它就不会被替换出去，也避免了哈希碰撞的可能。
+只用了一个计数器数组和它们附加的桶。减小数组的数量可以提升吞吐量（*关于吞吐量的内容我还不太明白原因*）。使用附加的桶，可以做到分离persistent items和non-persistent items，并且只记录item iD。如果一个item的persistence足够高，那它就不会被替换出去，也避免了哈希碰撞的可能。
 
 设$l=2/\epsilon, w=1$，算法的空间复杂度为$O(1/\epsilon)$。
 
@@ -145,7 +153,7 @@ $$
 
 #### Insertion Throughput
 
-内存的增大和$d$的增大会造成吞吐量的下降*（这里内存增大为什么会影响吞吐量下降不太明白）*。$d$对吞吐量影响更大，因为$d$变大代表更多的内存访问。
+内存的增大和$d$的增大会造成吞吐量的下降（*这里内存增大为什么会影响吞吐量下降不太明白*）。$d$对吞吐量影响更大，因为$d$变大代表更多的内存访问。
 
 ### Finding Persistent Items
 

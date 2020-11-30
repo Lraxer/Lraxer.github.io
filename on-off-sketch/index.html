@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://Lraxer.github.io/on-off-sketch/" />
 <meta property="og:image" content="http://Lraxer.github.io/logo.png"/>
 <meta property="article:published_time" content="2020-11-30T15:21:44+08:00" />
-<meta property="article:modified_time" content="2020-11-30T15:21:44+08:00" />
+<meta property="article:modified_time" content="2020-11-30T22:00:01+08:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="http://Lraxer.github.io/logo.png"/>
 
@@ -29,8 +29,8 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "http:\/\/Lraxer.github.io\/on-off-sketch\/"
-        },"genre": "posts","keywords": "persistence, sketch","wordcount":  3471 ,
-        "url": "http:\/\/Lraxer.github.io\/on-off-sketch\/","datePublished": "2020-11-30T15:21:44+08:00","dateModified": "2020-11-30T15:21:44+08:00","publisher": {
+        },"genre": "posts","keywords": "persistence, sketch","wordcount":  3467 ,
+        "url": "http:\/\/Lraxer.github.io\/on-off-sketch\/","datePublished": "2020-11-30T15:21:44+08:00","dateModified": "2020-11-30T22:00:01+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -106,7 +106,7 @@
             <div class="toc-content always-active" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">On-Off Sketch</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Lraxer</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="far fa-folder fa-fw"></i>文献阅读</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-30">2020-11-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3471 字&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-30">2020-11-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3467 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -183,6 +183,7 @@
 <li>判断$e$是否在Bloom Filter中。如果在，说明当前时间窗口$e$已经出现过，不做处理；如果不在，就把$e$插入到Bloom Filter中，执行下一步。</li>
 <li>把$e$插入到CM sketch中。</li>
 </ol>
+<!-- FIGURE -->
 <figure>
     <img src="Figure1.jpg" width="350" height="350"/> 
 </figure>
@@ -192,6 +193,7 @@
 <li>Bloom Filter会出现假阳性 (false positive)。这个时间窗口中没有出现的item被错误地认为是已经出现过。</li>
 <li>CM sketch的哈希碰撞会导致persistence被严重高估。如下图，3个item被映射到同一位置，本来3个item的persistence应该各增加1，现在各增加了3。</li>
 </ol>
+<!-- FIGURE -->
 <figure>
     <img src="Figure2.jpg" width="350" height="350"/> <figcaption>
             <h4>Overestimation</h4>
@@ -203,6 +205,7 @@
 <h4 id="数据结构">数据结构</h4>
 <p>On-Off Sketch提出了新的数据结构。On-Off sketch由$d$个数组组成，每一个数组包括$l$个计数器。其中每个计数器都有一个状态域 (state field)，有On和Off两个状态。第$i$个数组的第$j$个计数器表示为$C_i[j]$。</p>
 <p>在每个时间窗口最后，把所有的state field设置为On。</p>
+<!-- FIGURE -->
 <figure>
     <img src="Figure3.jpg" width="350" height="350"/> 
 </figure>
@@ -248,6 +251,7 @@ $$
 <li>一个由$l$个桶 (bucket) 构成的数组组成，第一部分中的每一个计数器对应一个桶。例如$B[i]$对应$C_1{i}$。每一个桶含有$w$个键值对 (key-value (KV) pairs)，键是item ID，值是一个计数器。这个计数器用$B[i][e_j]$表示。每个计数器也有它自己的state field。</li>
 </ol>
 <p>初始化每一个计数器的state field为On，所有计数器值为0。</p>
+<!-- FIGURE -->
 <figure>
     <img src="Figure4.jpg" width="350" height="350"/> 
 </figure>
@@ -268,7 +272,7 @@ $$
 <h4 id="查询persistent-items">查询persistent items</h4>
 <p>遍历所有桶，报告计数器的值大于给定阈值的item ID。</p>
 <h4 id="算法分析-1">算法分析</h4>
-<p>只用了一个计数器数组和它们附加的桶。减小数组的数量可以提升吞吐量*（关于吞吐量的内容我还不太明白原因）*。使用附加的桶，可以做到分离persistent items和non-persistent items，并且只记录item iD。如果一个item的persistence足够高，那它就不会被替换出去，也避免了哈希碰撞的可能。</p>
+<p>只用了一个计数器数组和它们附加的桶。减小数组的数量可以提升吞吐量（<em>关于吞吐量的内容我还不太明白原因</em>）。使用附加的桶，可以做到分离persistent items和non-persistent items，并且只记录item iD。如果一个item的persistence足够高，那它就不会被替换出去，也避免了哈希碰撞的可能。</p>
 <p>设$l=2/\epsilon, w=1$，算法的空间复杂度为$O(1/\epsilon)$。</p>
 <h2 id="优化">优化</h2>
 <p>使用SIMD进行加速。比如<a href="#fpi_insert" rel="">上面判断是否已经在桶中</a>，就可以用SIMD进行并行匹配，加速这个过程。同样还是那个算法的比较过程，也可以加速。论文中特意提到Small Space和PIE没有顺序访问操作，大多只是读写一项内容 (read or write one item)，所以不能使用SIMD指令进行加速。</p>
@@ -278,7 +282,7 @@ $$
 <h4 id="aae-average-absolute-error">AAE (Average Absolute Error)</h4>
 <p>随着内存的增加，最优的$d$值也在增大。当内存比较小的时候，更大的$d$会造成AAE增大。但是随着内存的增加，AAE也会快速下降。</p>
 <h4 id="insertion-throughput">Insertion Throughput</h4>
-<p>内存的增大和$d$的增大会造成吞吐量的下降*（这里内存增大为什么会影响吞吐量下降不太明白）*。$d$对吞吐量影响更大，因为$d$变大代表更多的内存访问。</p>
+<p>内存的增大和$d$的增大会造成吞吐量的下降（<em>这里内存增大为什么会影响吞吐量下降不太明白</em>）。$d$对吞吐量影响更大，因为$d$变大代表更多的内存访问。</p>
 <h3 id="finding-persistent-items-1">Finding Persistent Items</h3>
 <h4 id="error">Error</h4>
 <p>有足够内存的条件下，$w$增加，AAE和FNR (false negative rate) 往往会下降。论文里还有一段关于&quot;randomness&quot;和$w, l$对AAR, FNR, FPR (false positive rate)的影响，但是我没有看明白，在这里放上原文。</p>
