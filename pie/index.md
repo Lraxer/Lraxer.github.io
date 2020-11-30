@@ -106,7 +106,7 @@ PIE算法分为两个阶段：
 
 从$g_r=1$开始，临时把$g_r$个cells从group的$g$个cells中移除。用其他的$g-g_r$个cells恢复item ID。然后把$g_r$增加1，重新执行临时移除直到阈值$g_T$。一般$g_T$不会超过2.
 
-从$g$个items中移除$g_r$个，也就是$\left ( \begin{smallmatrix} g \\ g_r \end{smallmatrix} \right)$种移除方式。当$g_r=1$时就是要做$g$次不同的移除，每次都重新恢复一个item ID再验证。
+从$g$个items中移除$g_r$个，也就是$\left ( \begin{smallmatrix} g \\\\ g_r \end{smallmatrix} \right)$种移除方式。当$g_r=1$时就是要做$g$次不同的移除，每次都重新恢复一个item ID再验证。
 
 ## 算法的问题
 
