@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>On-Off Sketch - Lraxer&#39;s Blog</title><meta name="Description" content="My personal blog"><meta property="og:title" content="On-Off Sketch" />
+<meta property="og:description" content="简介 On-Off sketch是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理pe" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Lraxer.github.io/on-off-sketch/" />
+<meta property="og:image" content="http://Lraxer.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-30T15:21:44+08:00" />
+<meta property="article:modified_time" content="2020-11-30T15:21:44+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://Lraxer.github.io/logo.png"/>
+
+<meta name="twitter:title" content="On-Off Sketch"/>
+<meta name="twitter:description" content="简介 On-Off sketch是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理pe"/>
+<meta name="application-name" content="Lraxer&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="Lraxer&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://Lraxer.github.io/on-off-sketch/" /><link rel="prev" href="http://Lraxer.github.io/pie/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "On-Off Sketch",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/Lraxer.github.io\/on-off-sketch\/"
+        },"genre": "posts","keywords": "persistence, sketch","wordcount":  3471 ,
+        "url": "http:\/\/Lraxer.github.io\/on-off-sketch\/","datePublished": "2020-11-30T15:21:44+08:00","dateModified": "2020-11-30T15:21:44+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lraxer"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content always-active" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">On-Off Sketch</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Lraxer</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="far fa-folder fa-fw"></i>文献阅读</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-30">2020-11-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3471 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#persistence">Persistence</a></li>
+    <li><a href="#persistence-estimation">Persistence Estimation</a>
+      <ul>
+        <li><a href="#prior-work">Prior Work</a></li>
+        <li><a href="#on-off-sketch-persistence-estimation">On-Off Sketch: Persistence Estimation</a>
+          <ul>
+            <li><a href="#数据结构">数据结构</a></li>
+            <li><a href="#添加item">添加item</a></li>
+            <li><a href="#查询">查询</a></li>
+            <li><a href="#算法分析">算法分析</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#finding-persistent-items">Finding Persistent Items</a>
+      <ul>
+        <li><a href="#prior-work-1">Prior work</a></li>
+        <li><a href="#on-off-sketch-finding-persistent-items">On-Off Sketch: Finding Persistent Items</a>
+          <ul>
+            <li><a href="#数据结构-1">数据结构</a></li>
+            <li><a href="#fpi_insert">插入</a></li>
+            <li><a href="#查询persistent-items">查询persistent items</a></li>
+            <li><a href="#算法分析-1">算法分析</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#优化">优化</a></li>
+    <li><a href="#结果分析">结果分析</a>
+      <ul>
+        <li><a href="#persistence-estimation-1">Persistence Estimation</a>
+          <ul>
+            <li><a href="#aae-average-absolute-error">AAE (Average Absolute Error)</a></li>
+            <li><a href="#insertion-throughput">Insertion Throughput</a></li>
+          </ul>
+        </li>
+        <li><a href="#finding-persistent-items-1">Finding Persistent Items</a>
+          <ul>
+            <li><a href="#error">Error</a></li>
+            <li><a href="#insertion-throughput-1">Insertion Throughput</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="简介">简介</h2>
+<p><a href="http://net.pku.edu.cn/~yangtong/uploads/OnOffSketch.pdf" target="_blank" rel="noopener noreffer">On-Off sketch</a>是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理persistence esimation问题的算法，在finding persistent items方面，相比Small-Space和PIE也有着更好的表现。</p>
+<p>我读了整篇论文，但是数学证明方面有一些地方没有看懂。所以本文只是对On-Off Sketch算法的过程和实验结果的分析进行描述。</p>
+<h2 id="persistence">Persistence</h2>
+<p>Persistence是一个类似frequncy, cardinality, quantile的数据特征(characteristic)。它的定义如下：</p>
+<blockquote>
+<p>Given an item $e$ and a data stream with $T$ non-overlapping and contiguous time windows, the persistence of $e$ is defined as the number of time windows where $e$ appears.</p>
+</blockquote>
+<h2 id="persistence-estimation">Persistence Estimation</h2>
+<p>如前文所述，论文中说没有专门在这个方面设计算法的。但是有一些先前用在别的问题上的算法可以去做persistence estimation。</p>
+<h3 id="prior-work">Prior Work</h3>
+<p>使用Bloom Filter+Count-Min sketch (CM sketch)。</p>
+<p>Bloom Filter是用来处理membership问题的。CM Sketch是用来处理frequency问题的。这个两个算法结合是一种简单的处理persistence estimation的方式。假设当前item $e$到来，算法描述如下。</p>
+<ul>
+<li>在每个时间窗口结束时，设置Bloom Filter所有位为0。不改变CM sketch。</li>
+<li>CM sketch初始化所有位为0。</li>
+</ul>
+<ol>
+<li>判断$e$是否在Bloom Filter中。如果在，说明当前时间窗口$e$已经出现过，不做处理；如果不在，就把$e$插入到Bloom Filter中，执行下一步。</li>
+<li>把$e$插入到CM sketch中。</li>
+</ol>
+<figure>
+    <img src="Figure1.jpg" width="350" height="350"/> 
+</figure>
+
+<p>理想状况下，这个算法可以实现persistence estimation。通过Bloom Filter保证一个时间窗口一个item最多被记录一次，通过CM Sketch在所有时间窗口计算persistence值。但是同样，它有很大的局限性。</p>
+<ol>
+<li>Bloom Filter会出现假阳性 (false positive)。这个时间窗口中没有出现的item被错误地认为是已经出现过。</li>
+<li>CM sketch的哈希碰撞会导致persistence被严重高估。如下图，3个item被映射到同一位置，本来3个item的persistence应该各增加1，现在各增加了3。</li>
+</ol>
+<figure>
+    <img src="Figure2.jpg" width="350" height="350"/> <figcaption>
+            <h4>Overestimation</h4>
+        </figcaption>
+</figure>
+
+<p>对此我们希望停止使用Bloom Filter，并保证每一个CM Sketch的计数器在一个时间窗口只增加1。</p>
+<h3 id="on-off-sketch-persistence-estimation">On-Off Sketch: Persistence Estimation</h3>
+<h4 id="数据结构">数据结构</h4>
+<p>On-Off Sketch提出了新的数据结构。On-Off sketch由$d$个数组组成，每一个数组包括$l$个计数器。其中每个计数器都有一个状态域 (state field)，有On和Off两个状态。第$i$个数组的第$j$个计数器表示为$C_i[j]$。</p>
+<p>在每个时间窗口最后，把所有的state field设置为On。</p>
+<figure>
+    <img src="Figure3.jpg" width="350" height="350"/> 
+</figure>
+
+<h4 id="添加item">添加item</h4>
+<p>添加item $e_i$到On-Off sketch。用$d$个哈希函数计算哈希值，把$e_i$映射到$d$个计数器$C_j[h_j(e_i)]$中。这$d$个计数器每一个都可能有两种情况：</p>
+<ol>
+<li>计数器的state为On。把计数器值增加1，把state变成Off。</li>
+<li>计数器的state为Off。说明<strong>这个计数器</strong>在当前时间窗口被访问过 。所以不再改变计数器。</li>
+</ol>
+<h4 id="查询">查询</h4>
+<p>和CM sketch类似，对要查询的item $e_i$做$d$个哈希找到相应计数器，然后取其中的最小值。把persistence的估计值表示为$\hat{p_i}$，也就是
+$$
+\hat{p_i} = min_{1 \le j \le d} \left(C_j[h_j(e_i)] \right)
+$$</p>
+<h4 id="算法分析">算法分析</h4>
+<p>这个算法达成了前面我们说的两个目标。</p>
+<ol>
+<li>避免使用Bloom Filter，不会出现它产生的假阳性问题，从而不会有item的persistence被低估，只会被高估，只会产生单边错误 (one sided errors)。</li>
+<li>每一个计数器在一个时间窗口内只能增加1，避免了CM sketch哈希碰撞导致高估过多的情况。</li>
+</ol>
+<p>将每一个数组的计数器个数$l$、数组个数$d$表示为
+$$
+\begin{aligned} l&amp;=e/\epsilon \\ d&amp;=ln \left( 1/\delta \right) \end{aligned}
+$$
+根据论文的分析，算法的时间复杂度为$O \left(ln \left(1/\delta \right) \right)$，空间复杂度为$O \left( \left( 1/\epsilon \right) \right) ln(1/\delta)$。此外可以证明，On-Off sketch的误差一定小于CM sketch。</p>
+<h2 id="finding-persistent-items">Finding Persistent Items</h2>
+<h3 id="prior-work-1">Prior work</h3>
+<p>对于这个问题，先前的工作有Small Space和PIE两个。这两个可以看以前的文章。</p>
+<p>简述这两个算法的缺点：</p>
+<ol>
+<li>大量空间存储的都是non-persistent items，造成严重浪费。</li>
+<li>Small Space错误控制得不好。想要更精确就要花费大量的空间。</li>
+<li>PIE相比之下空间需求很大。</li>
+<li>PIE通过Raptor code恢复item ID需要用到矩阵乘法，速度慢。</li>
+</ol>
+<h3 id="on-off-sketch-finding-persistent-items">On-Off Sketch: Finding Persistent Items</h3>
+<p>为了避免出现上述问题，On-Off sketch的核心技术是通过persistence识别items，并且只储存persistent items的ID。</p>
+<h4 id="数据结构-1">数据结构</h4>
+<p>由两部分组成。</p>
+<ol>
+<li>一个由$l$个计数器组成的数组。第$i$个计数器表示为$C_1[i]$。这个数组使用一个哈希函数$h_1 \left( . \right)$，把每个item映射到数组的一个计数器中。</li>
+<li>一个由$l$个桶 (bucket) 构成的数组组成，第一部分中的每一个计数器对应一个桶。例如$B[i]$对应$C_1{i}$。每一个桶含有$w$个键值对 (key-value (KV) pairs)，键是item ID，值是一个计数器。这个计数器用$B[i][e_j]$表示。每个计数器也有它自己的state field。</li>
+</ol>
+<p>初始化每一个计数器的state field为On，所有计数器值为0。</p>
+<figure>
+    <img src="Figure4.jpg" width="350" height="350"/> 
+</figure>
+
+<h4 id="fpi_insert">插入</h4>
+<p>要插入item $e_i$，先判断$e_i$是否已经在桶$B[h_1(e_i)]$中。</p>
+<ul>
+<li>如果在桶中，且$B[h_1(e_i)][e_i]$的state为On，把$B[h_1(e_i)][e_i]$增加1，state设为Off；如果$B[h_1(e_i)][e_i]$的state为Off，不做操作。</li>
+<li>如果不在，且$C_1[h_1(e_i)]$的state为On，把$C_1[h_1(e_i)]$增加1，state设为Off。
+<ul>
+<li>如果此时$C_1[h_1(e_i)]&gt;B[h_1(e_i)]^{min}$，就交换$C_1[h_1(e_i)]$和桶中值最小的那个计数器的值以及state field。然后把$B[h_1(e_i)]^{min}$对应的item ID换成$e_i$。</li>
+<li>如果此时$C_1[h_1(e_i)]\le B[h_1(e_i)]^{min}$，不做操作。</li>
+</ul>
+</li>
+<li>如果不在，且$C_1[h_1(e_i)]$的state为Off，不做操作。</li>
+</ul>
+<p>在每个时间窗口最后，把所有计数器的state field设为On。</p>
+<h4 id="查询persistent-items">查询persistent items</h4>
+<p>遍历所有桶，报告计数器的值大于给定阈值的item ID。</p>
+<h4 id="算法分析-1">算法分析</h4>
+<p>只用了一个计数器数组和它们附加的桶。减小数组的数量可以提升吞吐量*（关于吞吐量的内容我还不太明白原因）*。使用附加的桶，可以做到分离persistent items和non-persistent items，并且只记录item iD。如果一个item的persistence足够高，那它就不会被替换出去，也避免了哈希碰撞的可能。</p>
+<p>设$l=2/\epsilon, w=1$，算法的空间复杂度为$O(1/\epsilon)$。</p>
+<h2 id="优化">优化</h2>
+<p>使用SIMD进行加速。比如<a href="#fpi_insert" rel="">上面判断是否已经在桶中</a>，就可以用SIMD进行并行匹配，加速这个过程。同样还是那个算法的比较过程，也可以加速。论文中特意提到Small Space和PIE没有顺序访问操作，大多只是读写一项内容 (read or write one item)，所以不能使用SIMD指令进行加速。</p>
+<h2 id="结果分析">结果分析</h2>
+<p>基本全面优于先前的工作。论文的图就不放了。这里多说一下参数设置对实验的影响结果。</p>
+<h3 id="persistence-estimation-1">Persistence Estimation</h3>
+<h4 id="aae-average-absolute-error">AAE (Average Absolute Error)</h4>
+<p>随着内存的增加，最优的$d$值也在增大。当内存比较小的时候，更大的$d$会造成AAE增大。但是随着内存的增加，AAE也会快速下降。</p>
+<h4 id="insertion-throughput">Insertion Throughput</h4>
+<p>内存的增大和$d$的增大会造成吞吐量的下降*（这里内存增大为什么会影响吞吐量下降不太明白）*。$d$对吞吐量影响更大，因为$d$变大代表更多的内存访问。</p>
+<h3 id="finding-persistent-items-1">Finding Persistent Items</h3>
+<h4 id="error">Error</h4>
+<p>有足够内存的条件下，$w$增加，AAE和FNR (false negative rate) 往往会下降。论文里还有一段关于&quot;randomness&quot;和$w, l$对AAR, FNR, FPR (false positive rate)的影响，但是我没有看明白，在这里放上原文。</p>
+<blockquote>
+<p>With smaller $w$, the $l$ increases, and <u>the randomness of also increases</u> <em>(注：原文如此，没懂)</em>. When the memory is too small, such randomness can reduce FPR because there are often some buckets whose degree of overestimation is small, so the AAE and FNR decrease. When there is enough memory, randomness increases FPR because there are more buckets whose degree of overestimation is too high, so the AAE and FNR increase.</p>
+</blockquote>
+<h4 id="insertion-throughput-1">Insertion Throughput</h4>
+<p>$w$提高，吞吐量会降低。但是由于内存访问次数少，就算$w$比较大，吞吐量仍然比较高。可见这里$w$的选取就是精确度和吞吐量之间的trade-off。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-11-30</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/on-off-sketch/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://Lraxer.github.io/on-off-sketch/" data-title="On-Off Sketch" data-hashtags="persistence,sketch"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://Lraxer.github.io/on-off-sketch/" data-hashtag="persistence"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://Lraxer.github.io/on-off-sketch/" data-title="On-Off Sketch" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://Lraxer.github.io/on-off-sketch/" data-title="On-Off Sketch"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://Lraxer.github.io/on-off-sketch/" data-title="On-Off Sketch"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="http://Lraxer.github.io/on-off-sketch/" data-title="On-Off Sketch" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="http://Lraxer.github.io/on-off-sketch/" data-title="On-Off Sketch"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/persistence/">persistence</a>,&nbsp;<a href="/tags/sketch/">sketch</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/pie/" class="prev" rel="prev" title="PIE算法"><i class="fas fa-angle-left fa-fw"></i>PIE算法</a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.78.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lraxer</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

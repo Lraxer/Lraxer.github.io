@@ -3,7 +3,14 @@
         <title>所有文章 - Lraxer&#39;s Blog</title>
         <link>http://Lraxer.github.io/posts/</link>
         <description>所有文章 | Lraxer&#39;s Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 29 Nov 2020 20:30:05 &#43;0800</lastBuildDate><atom:link href="http://Lraxer.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 30 Nov 2020 15:21:44 &#43;0800</lastBuildDate><atom:link href="http://Lraxer.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>On-Off Sketch</title>
+    <link>http://Lraxer.github.io/on-off-sketch/</link>
+    <pubDate>Mon, 30 Nov 2020 15:21:44 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>http://Lraxer.github.io/on-off-sketch/</guid>
+    <description><![CDATA[简介 On-Off sketch是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理pe]]></description>
+</item><item>
     <title>PIE算法</title>
     <link>http://Lraxer.github.io/pie/</link>
     <pubDate>Sun, 29 Nov 2020 20:30:05 &#43;0800</pubDate>
