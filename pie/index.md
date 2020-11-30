@@ -31,25 +31,16 @@ Raptor code最重要的优势是对一个长度为$l$ bits的item ID，我们只
 
 这个从原理上来说其实并不复杂，主要方式就是矩阵乘法。把item ID看作是$l \times 1$的向量，选取一个$r \times l$的矩阵
 $$
-A=
-\begin{bmatrix}
-a_{i1}^1 & a_{i1}^2 & ... & a_{i1}^l \\
-a_{i2}^1 & a_{i2}^2 & ... & a_{i2}^l \\
-\vdots & \vdots & & \vdots \\
-a_{ir}^1 & a_{ir}^2 & ... & a_{ir}^l \\
-\end{bmatrix}
+A =
+\begin{bmatrix} a_{i1}^1 & a_{i1}^2 & \cdots & a_{i1}^l \\\\ a_{i2}^1 & a_{i2}^2 & \cdots & a_{i2}^l \\\\ \vdots & \vdots & & \vdots \\\\ a_{ir}^1 & a_{ir}^2 & \cdots & a_{ir}^l \\\\ \end{bmatrix}
 $$
 
 $$
 A \cdot
-\begin{bmatrix}
-I_1^e \\ I_2^e \\ \vdots \\ I_l^e
-\end{bmatrix}
-=
-\begin{bmatrix}
-R_{i1}^e \\ R_{i2}^e \\ \vdots \\ R_{ir}^e
-\end{bmatrix}
+\begin{bmatrix} I_1^e \\\\ I_2^e \\\\ \vdots \\\\ I_l^e \\\\ \end{bmatrix} = \begin{bmatrix} R_{i1}^e \\\\ R_{i2}^e \\\\ \vdots \\\\ R_{ir}^e \end{bmatrix}
 $$
+
+
 
 ## PIE算法过程
 
