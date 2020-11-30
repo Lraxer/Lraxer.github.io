@@ -1,8 +1,8 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Sketch - 标签 - Lraxer&#39;s Blog</title>
+        <title>sketch - 标签 - Lraxer&#39;s Blog</title>
         <link>http://Lraxer.github.io/tags/sketch/</link>
-        <description>Sketch - 标签 - Lraxer&#39;s Blog</description>
+        <description>sketch - 标签 - Lraxer&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 29 Nov 2020 20:30:05 &#43;0800</lastBuildDate><atom:link href="http://Lraxer.github.io/tags/sketch/" rel="self" type="application/rss+xml" /><item>
     <title>PIE算法</title>
     <link>http://Lraxer.github.io/pie/</link>

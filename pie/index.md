@@ -77,7 +77,7 @@ PIE算法分为两个阶段：
 #### Cell Line Processing
 
 1. 丢弃cell line中所有为空(empty)和冲突(collide)的cell。
-2. 按照hash-print为cell line中剩下的进行分组(group)。hash-print相同的分为一组。可以看上面的图，颜色相同的在一个group中。图中圈出的cell line一共有3组。这里可能会遇到hash-print碰撞导致不相同的item被分到了一组，这样的group称为mingled groups。我们将在[#Mingled groups](#Mingled Groups)讨论这一情况。
+2. 按照hash-print为cell line中剩下的进行分组(group)。hash-print相同的分为一组。可以看上面的图，颜色相同的在一个group中。图中圈出的cell line一共有3组。这里可能会遇到hash-print碰撞导致不相同的item被分到了一组，这样的group称为mingled groups。我们将在[Mingled groups](#mingled_groups)讨论这一情况。
 3. 将第$x$个cell line的groups和前面$x-1$个cell lines的groups比较，合并其中hash-print相同的组。
 
 其中$x=1$的cell line不执行第3步，$x=2$到$x=m$的cell lines执行以上3步。
@@ -100,7 +100,7 @@ PIE算法分为两个阶段：
 
 如果两步验证全都通过，那么这个恢复出的item ID有很大概率是正确的。
 
-#### Mingled Groups
+#### Mingled Groups {#mingled_groups}
 
 最后要解决一个group里有不同item的情况。
 
