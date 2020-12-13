@@ -23,6 +23,8 @@ STBF是Bloom Filter的扩展。Bloom Filter是$m$ bits，STBF就是$m$个cell。
 
 和Bloom Filter一样，STBF使用$k$个哈希函数做映射。如果有两个item被映射到了同一个cell（发生了冲突），那么把$C_{iF}$置0，$C_{iR}$和$C_{iP}$所有位置1。
 
+<!-- FIGURE -->
+
 {{< figure src="Space-Time Bloom Filter.jpg" height="550" width="550">}}
 
 ## Raptor Code
@@ -30,15 +32,26 @@ STBF是Bloom Filter的扩展。Bloom Filter是$m$ bits，STBF就是$m$个cell。
 Raptor code最重要的优势是对一个长度为$l$ bits的item ID，我们只需要存储$r$ bits （$r$比$l$小很多）的Raptor code就可以恢复出原本的item ID。
 
 这个从原理上来说其实并不复杂，主要方式就是矩阵乘法。把item ID看作是$l \times 1$的向量，选取一个$r \times l$的矩阵
+
+<p> 
 $$
 A =
-\begin{bmatrix} a_{i1}^1 & a_{i1}^2 & \cdots & a_{i1}^l \\\\ a_{i2}^1 & a_{i2}^2 & \cdots & a_{i2}^l \\\\ \vdots & \vdots & & \vdots \\\\ a_{ir}^1 & a_{ir}^2 & \cdots & a_{ir}^l \\\\ \end{bmatrix}
+\begin{bmatrix} 
+    a_{i1}^1 & a_{i1}^2 & \cdots & a_{i1}^l \\
+    a_{i2}^1 & a_{i2}^2 & \cdots & a_{i2}^l \\
+    \vdots & \vdots & & \vdots \\
+    a_{ir}^1 & a_{ir}^2 & \cdots & a_{ir}^l \\
+\end{bmatrix}
 $$
-
+</p>
+<p>
 $$
 A \cdot
-\begin{bmatrix} I_1^e \\\\ I_2^e \\\\ \vdots \\\\ I_l^e \\\\ \end{bmatrix} = \begin{bmatrix} R_{i1}^e \\\\ R_{i2}^e \\\\ \vdots \\\\ R_{ir}^e \end{bmatrix}
+\begin{bmatrix} I_1^e \\ I_2^e \\ \vdots \\ I_l^e \\ \end{bmatrix} 
+=
+\begin{bmatrix} R_{i1}^e \\ R_{i2}^e \\ \vdots \\ R_{ir}^e \end{bmatrix}
 $$
+</p>
 
 
 
