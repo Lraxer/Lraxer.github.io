@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>PIE算法 - Lraxer&#39;s Blog</title><meta name="Description" content="My personal blog"><meta property="og:title" content="PIE算法" />
+<meta property="og:description" content="简介 PIE算法使用Space-Time Bloom Filter(STBF)和Raptor Code，寻找persistent items。 我只读了算法的过" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Lraxer.github.io/2020/11/pie/" />
+<meta property="og:image" content="http://Lraxer.github.io/logo.png"/>
+<meta property="article:published_time" content="2020-11-29T20:30:05+08:00" />
+<meta property="article:modified_time" content="2020-12-13T19:04:12+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://Lraxer.github.io/logo.png"/>
+
+<meta name="twitter:title" content="PIE算法"/>
+<meta name="twitter:description" content="简介 PIE算法使用Space-Time Bloom Filter(STBF)和Raptor Code，寻找persistent items。 我只读了算法的过"/>
+<meta name="application-name" content="Lraxer&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="Lraxer&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://Lraxer.github.io/2020/11/pie/" /><link rel="prev" href="http://Lraxer.github.io/2020/11/small-space/" /><link rel="next" href="http://Lraxer.github.io/2020/11/on-off-sketch/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "PIE算法",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/Lraxer.github.io\/2020\/11\/pie\/"
+        },"genre": "posts","keywords": "sketch, persistence","wordcount":  2380 ,
+        "url": "http:\/\/Lraxer.github.io\/2020\/11\/pie\/","datePublished": "2020-11-29T20:30:05+08:00","dateModified": "2020-12-13T19:04:12+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lraxer"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content always-active" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">PIE算法</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Lraxer</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="far fa-folder fa-fw"></i>文献阅读</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-29">2020-11-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2380 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#space-time-bloom-filter">Space-Time Bloom Filter</a></li>
+    <li><a href="#raptor-code">Raptor Code</a></li>
+    <li><a href="#pie算法过程">PIE算法过程</a>
+      <ul>
+        <li><a href="#recording-phase">Recording Phase</a></li>
+        <li><a href="#identification-phase">Identification Phase</a>
+          <ul>
+            <li><a href="#cell-line-processing">Cell Line Processing</a></li>
+            <li><a href="#recovering-item-ids">Recovering Item IDs</a></li>
+            <li><a href="#mingled_groups">Mingled Groups</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#算法的问题">算法的问题</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="简介">简介</h2>
+<p><a href="http://www.vldb.org/pvldb/vol10/p289-dai.pdf" target="_blank" rel="noopener noreffer">PIE算法</a>使用Space-Time Bloom Filter(STBF)和Raptor Code，寻找persistent items。</p>
+<p>我只读了算法的过程，数学证明和其他内容没有看。</p>
+<h2 id="space-time-bloom-filter">Space-Time Bloom Filter</h2>
+<p>STBF是Bloom Filter的扩展。Bloom Filter是$m$ bits，STBF就是$m$个cell。PIE中STBF的一个cell包含3部分内容：</p>
+<ol>
+<li>
+<p>1 bit的标志位$C_{iF}$。</p>
+<ul>
+<li>
+<p>0代表cell未使用或者发生冲突。</p>
+</li>
+<li>
+<p>1代表cell已经被使用。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>$r$ bits的Raptor Code $C_{iR}$。</p>
+</li>
+<li>
+<p>用一个特定的哈希函数计算的$p$ bits的hash-print $C_{iP}$。</p>
+</li>
+</ol>
+<p>和Bloom Filter一样，STBF使用$k$个哈希函数做映射。如果有两个item被映射到了同一个cell（发生了冲突），那么把$C_{iF}$置0，$C_{iR}$和$C_{iP}$所有位置1。</p>
+<!-- FIGURE -->
+<figure>
+    <img src="Space-Time%20Bloom%20Filter.jpg" width="550" height="550"/> 
+</figure>
+
+<h2 id="raptor-code">Raptor Code</h2>
+<p>Raptor code最重要的优势是对一个长度为$l$ bits的item ID，我们只需要存储$r$ bits （$r$比$l$小很多）的Raptor code就可以恢复出原本的item ID。</p>
+<p>这个从原理上来说其实并不复杂，主要方式就是矩阵乘法。把item ID看作是$l \times 1$的向量，选取一个$r \times l$的矩阵</p>
+<p> 
+$$
+A =
+\begin{bmatrix} 
+    a_{i1}^1 & a_{i1}^2 & \cdots & a_{i1}^l \\
+    a_{i2}^1 & a_{i2}^2 & \cdots & a_{i2}^l \\
+    \vdots & \vdots & & \vdots \\
+    a_{ir}^1 & a_{ir}^2 & \cdots & a_{ir}^l \\
+\end{bmatrix}
+$$
+</p>
+<p>
+$$
+A \cdot
+\begin{bmatrix} I_1^e \\ I_2^e \\ \vdots \\ I_l^e \\ \end{bmatrix} 
+=
+\begin{bmatrix} R_{i1}^e \\ R_{i2}^e \\ \vdots \\ R_{ir}^e \end{bmatrix}
+$$
+</p>
+<h2 id="pie算法过程">PIE算法过程</h2>
+<p>PIE算法分为两个阶段：</p>
+<ol>
+<li>Recording Phase</li>
+<li>Identification Phase</li>
+</ol>
+<h3 id="recording-phase">Recording Phase</h3>
+<p>这个阶段用来记录各个时间窗口出现的item。每一个时间窗口都要构建一个STBF来做记录。这些STBF应该用的都是相同的$k$个哈希函数。</p>
+<p>假设当前时间窗口为$t_i$，接收到了item $e$。</p>
+<ol>
+<li>用$e$的ID计算$r$-bit的Raptor code和$p$-bit的hash-print。</li>
+<li>用STBF的$k$个哈希函数计算要映射的cell。</li>
+<li>检查这些cell是空的(empty)，还是已经被一个item使用的(singleton)，还是已经发生冲突的(collided)。
+<ul>
+<li>如果是空的，就把三个数值添加进去。标志位设为1之后，这个cell的状态就变成了singleton。</li>
+<li>如果已经被使用，检查储存在cell中的这个项目的hash-print和$e$的是否匹配。如果匹配不需要做其他操作；如果不匹配就要把cell的状态变成collided了，做法参照前文STBF的内容。</li>
+<li>如果已经发生冲突，不需要做其他操作。</li>
+</ul>
+</li>
+</ol>
+<h3 id="identification-phase">Identification Phase</h3>
+<p>这个过程用来找persistent items。</p>
+<p>经过$T$个时间窗口，就建立了$T$个STBF。下面根据论文给出的例子讲解。</p>
+<!-- FIGURE -->
+<figure>
+    <img src="Cell%20Line.jpg" width="350" height="350"/> 
+</figure>
+
+<p>假设一个STBF长度为$m$-bit，新定义cell line，包含$STBF_1[x], STBF_2[x], \dots , STBF_T[x]$，其中$1 \le x \le m$。</p>
+<p>下面对cell line进行处理。</p>
+<h4 id="cell-line-processing">Cell Line Processing</h4>
+<ol>
+<li>丢弃cell line中所有为空(empty)和冲突(collide)的cell。</li>
+<li>按照hash-print为cell line中剩下的进行分组(group)。hash-print相同的分为一组。可以看上面的图，颜色相同的在一个group中。图中圈出的cell line一共有3组。这里可能会遇到hash-print碰撞导致不相同的item被分到了一组，这样的group称为mingled groups。我们将在<a href="#mingled_groups" rel="">Mingled groups</a>讨论这一情况。</li>
+<li>将第$x$个cell line的groups和前面$x-1$个cell lines的groups比较，合并其中hash-print相同的组。</li>
+</ol>
+<p>其中$x=1$的cell line不执行第3步，$x=2$到$x=m$的cell lines执行以上3步。</p>
+<h4 id="recovering-item-ids">Recovering Item IDs</h4>
+<p>通过上面的步骤，对得到的groups计算item ID。<strong>这一步好像没有详细说明是如何选取Raptor code进行计算的</strong>（随机选一个item的还是用其他方法取得的）。因为如果是mingled groups，可能会出现group中两个item的hash-print相同而Raptor code不同的情况。</p>
+<p>恢复出item ID后进行两步验证，确定item ID是否正确。</p>
+<ol>
+<li>
+<p>计算恢复出的item  ID的hash-print，与group中的hash-prints比较是否相等。</p>
+</li>
+<li>
+<p>（通过第一步验证后）使用$k$个哈希函数计算恢复的ID会被映射到的cell。</p>
+<p>如果和group中的cell都冲突了，所有这些cell的Raptor code都相同，所有这些cell的hash-print都和恢复出的item ID的hash-print相同才算验证通过。</p>
+<p>为了防止解释不清这里上原文吧。</p>
+<blockquote>
+<p>For the recovered ID to pass the second test, unless the cells at these k locations in these STBFs are collided, the Raptor code fields of all these cells should be the same and the hash-prints of all these cells must match the hash-print of the recovered ID.</p>
+</blockquote>
+</li>
+</ol>
+<p>如果两步验证全都通过，那么这个恢复出的item ID有很大概率是正确的。</p>
+<h4 id="mingled_groups">Mingled Groups</h4>
+<p>最后要解决一个group里有不同item的情况。</p>
+<p>从$g_r=1$开始，临时把$g_r$个cells从group的$g$个cells中移除。用其他的$g-g_r$个cells恢复item ID。然后把$g_r$增加1，重新执行临时移除直到阈值$g_T$。一般$g_T$不会超过2.</p>
+<p>从$g$个items中移除$g_r$个，也就是$\left ( \begin{smallmatrix} g \\ g_r \end{smallmatrix} \right)$种移除方式。当$g_r=1$时就是要做$g$次不同的移除，每次都重新恢复一个item ID再验证。</p>
+<h2 id="算法的问题">算法的问题</h2>
+<p>PIE的优势在于一个item的persistence越高，成功恢复item ID的概率也越大。但是它也有明显的缺陷。</p>
+<ol>
+<li>使用Raptor code节省了空间，但是PIE要记录每一个时间窗口的所有不同的items(every distinct item)。其中大部分也都是non-persistent items，PIE浪费了大量空间在这些上面。</li>
+<li>计算Raptor code要进行矩阵乘法，相比数据流的速度来说矩阵乘法太慢了。</li>
+</ol>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2020-12-13</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/2020/11/pie/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://Lraxer.github.io/2020/11/pie/" data-title="PIE算法" data-hashtags="sketch,persistence"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://Lraxer.github.io/2020/11/pie/" data-hashtag="sketch"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://Lraxer.github.io/2020/11/pie/" data-title="PIE算法" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://Lraxer.github.io/2020/11/pie/" data-title="PIE算法"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://Lraxer.github.io/2020/11/pie/" data-title="PIE算法"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="http://Lraxer.github.io/2020/11/pie/" data-title="PIE算法" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="http://Lraxer.github.io/2020/11/pie/" data-title="PIE算法"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/sketch/">sketch</a>,&nbsp;<a href="/tags/persistence/">persistence</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2020/11/small-space/" class="prev" rel="prev" title="Small-Space算法"><i class="fas fa-angle-left fa-fw"></i>Small-Space算法</a>
+            <a href="/2020/11/on-off-sketch/" class="next" rel="next" title="On-Off Sketch">On-Off Sketch<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.78.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lraxer</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
