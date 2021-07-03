@@ -6,16 +6,16 @@
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 21 Nov 2020 16:25:09 &#43;0800</lastBuildDate><atom:link href="http://Lraxer.github.io/tags/test/" rel="self" type="application/rss+xml" /><item>
     <title>显示效果测试</title>
     <link>http://Lraxer.github.io/2020/11/%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95/</link>
-    <pubDate>Sat, 21 Nov 2020 16:25:09 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95/</guid>
+    <pubDate>Sat, 21 Nov 2020 16:25:09 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95/</guid>
     <description><![CDATA[显示效果测试 1 2 3 4 5 6 #include &lt;iostream&gt; int main() { std::cout &lt;&lt; &#34;Hello world!&#34; &lt;&lt; endl; return 0; } ==HIGHLIGHT== (not working) 标题 折叠内容 $$ {\color{red}E}={\color{blue}mc^2} $$ 矩阵和其他环境必须写到一行，反斜线必须是双倍的。 $$ A = \begin{bmatrix} a_{i1}^1 &amp; a_{i1}^2 &amp;]]></description>
 </item><item>
     <title>Hello</title>
     <link>http://Lraxer.github.io/2020/11/hello/</link>
-    <pubDate>Sat, 21 Nov 2020 10:39:09 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/hello/</guid>
+    <pubDate>Sat, 21 Nov 2020 10:39:09 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/hello/</guid>
     <description><![CDATA[Hello This is the first post. 一级目录 二级目录 三级目录 四级目录 五级目录 六级目录]]></description>
 </item></channel>
 </rss>

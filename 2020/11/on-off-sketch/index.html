@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="robots" content="noodp" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>On-Off Sketch - Lraxer&#39;s Blog</title><meta name="Description" content="My personal blog"><meta property="og:title" content="On-Off Sketch" />
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>On-Off Sketch - Lraxer&#39;s Blog</title><meta name="Description" content="My personal blog"><meta property="og:title" content="On-Off Sketch" />
 <meta property="og:description" content="简介 On-Off sketch是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理pe" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://Lraxer.github.io/2020/11/on-off-sketch/" />
-<meta property="og:image" content="http://Lraxer.github.io/logo.png"/>
+<meta property="og:url" content="http://Lraxer.github.io/2020/11/on-off-sketch/" /><meta property="og:image" content="http://Lraxer.github.io/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-30T15:21:44+08:00" />
 <meta property="article:modified_time" content="2020-11-30T22:34:58+08:00" />
+
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="http://Lraxer.github.io/logo.png"/>
 
 <meta name="twitter:title" content="On-Off Sketch"/>
 <meta name="twitter:description" content="简介 On-Off sketch是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理pe"/>
 <meta name="application-name" content="Lraxer&#39;s Blog">
-<meta name="apple-mobile-web-app-title" content="Lraxer&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<meta name="apple-mobile-web-app-title" content="Lraxer&#39;s Blog">
+
+<meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://Lraxer.github.io/2020/11/on-off-sketch/" /><link rel="prev" href="http://Lraxer.github.io/2020/11/pie/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://Lraxer.github.io/2020/11/on-off-sketch/" /><link rel="prev" href="http://Lraxer.github.io/2020/11/pie/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -38,9 +43,22 @@
             },"description": ""
     }
     </script></head>
-    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
-        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {
+            const metas = document.getElementsByTagName('meta');
+            for (let i = 0; i < metas.length; i++)
+                if (metas[i].getAttribute('name') === metaName)
+                    return metas[i];
+            return '';
+        }
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let themeColorMeta = getMeta('theme-color');
+        if (document.body.getAttribute('theme') != 'light') themeColorMeta.content = '#000000';
+    </script>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
         <div class="header-title">
             <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
@@ -48,19 +66,18 @@
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
-                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw"></i>
                         </a>
-                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
                             <i class="fas fa-times-circle fa-fw"></i>
                         </a>
                         <span class="search-button search-loading" id="search-loading-desktop">
                             <i class="fas fa-spinner fa-fw fa-spin"></i>
                         </span>
-                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    </span><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
                     <i class="fas fa-adjust fa-fw"></i>
-                </a>
-            </div>
+                </a></div>
         </div>
     </div>
 </header><header class="mobile" id="header-mobile">
@@ -76,20 +93,20 @@
         <div class="menu" id="menu-mobile"><div class="search-wrapper">
                     <div class="search mobile" id="search-mobile">
                         <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
-                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
                             <i class="fas fa-search fa-fw"></i>
                         </a>
-                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
                             <i class="fas fa-times-circle fa-fw"></i>
                         </a>
                         <span class="search-button search-loading" id="search-loading-mobile">
                             <i class="fas fa-spinner fa-fw fa-spin"></i>
                         </span>
                     </div>
-                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
                         取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw"></i>
             </a></div>
     </div>
@@ -101,11 +118,13 @@
     <div id="search-dropdown-mobile"></div>
 </div>
 <main class="main">
-                <div class="container"><div class="toc" id="toc-auto">
-            <h2 class="toc-title">目录</h2>
-            <div class="toc-content always-active" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">On-Off Sketch</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Lraxer</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="far fa-folder fa-fw"></i>文献阅读</a></span></div>
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content always-active" id="toc-content-auto"></div>
+    </div><script>document.body.setAttribute("pageStyle", "normal")</script><script>document.body.setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">On-Off Sketch</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="author fas fa-user-circle fa-fw"></i>Lraxer</a>
+                </span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/"><i class="far fa-folder fa-fw"></i>文献阅读</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-30">2020-11-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3467 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
@@ -184,8 +203,7 @@
 <li>把$e$插入到CM sketch中。</li>
 </ol>
 <!-- FIGURE -->
-<figure>
-    <img src="Figure1.jpg" width="350" height="350"/> 
+<figure><img src="Figure1.jpg" width="350" height="350"/>
 </figure>
 
 <p>理想状况下，这个算法可以实现persistence estimation。通过Bloom Filter保证一个时间窗口一个item最多被记录一次，通过CM Sketch在所有时间窗口计算persistence值。但是同样，它有很大的局限性。</p>
@@ -194,8 +212,7 @@
 <li>CM sketch的哈希碰撞会导致persistence被严重高估。如下图，3个item被映射到同一位置，本来3个item的persistence应该各增加1，现在各增加了3。</li>
 </ol>
 <!-- FIGURE -->
-<figure>
-    <img src="Figure2.jpg" width="350" height="350"/> <figcaption>
+<figure><img src="Figure2.jpg" width="350" height="350"/><figcaption>
             <h4>Overestimation</h4>
         </figcaption>
 </figure>
@@ -206,8 +223,7 @@
 <p>On-Off Sketch提出了新的数据结构。On-Off sketch由$d$个数组组成，每一个数组包括$l$个计数器。其中每个计数器都有一个状态域 (state field)，有On和Off两个状态。第$i$个数组的第$j$个计数器表示为$C_i[j]$。</p>
 <p>在每个时间窗口最后，把所有的state field设置为On。</p>
 <!-- FIGURE -->
-<figure>
-    <img src="Figure3.jpg" width="350" height="350"/> 
+<figure><img src="Figure3.jpg" width="350" height="350"/>
 </figure>
 
 <h4 id="添加item">添加item</h4>
@@ -252,8 +268,7 @@ $$
 </ol>
 <p>初始化每一个计数器的state field为On，所有计数器值为0。</p>
 <!-- FIGURE -->
-<figure>
-    <img src="Figure4.jpg" width="350" height="350"/> 
+<figure><img src="Figure4.jpg" width="350" height="350"/>
 </figure>
 
 <h4 id="fpi_insert">插入</h4>
@@ -301,10 +316,10 @@ $$
         </div>
         <div class="post-info-line">
             <div class="post-info-md"><span>
-                            <a class="link-to-markdown" href="/2020/11/on-off-sketch/index.md" target="_blank">阅读原始文档</a>
+                            <a class="link-to-markdown" href="/2020/11/on-off-sketch/index.md" target="_blank" rel="noopener noreferrer">阅读原始文档</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch" data-hashtags="persistence,sketch"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-hashtag="persistence"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch"><i class="fab fa-evernote fa-fw"></i></a></span>
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch" data-hashtags="persistence,sketch"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-hashtag="persistence"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Line" data-sharer="line" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Blogger" data-sharer="blogger" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="http://Lraxer.github.io/2020/11/on-off-sketch/" data-title="On-Off Sketch"><i class="fab fa-evernote fa-fw"></i></a></span>
             </div>
         </div>
     </div>
@@ -312,23 +327,23 @@ $$
     <div class="post-info-more">
         <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/persistence/">persistence</a>,&nbsp;<a href="/tags/sketch/">sketch</a></section>
         <section>
-            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+            <span><a href="#" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
         </section>
     </div>
 
     <div class="post-nav"><a href="/2020/11/pie/" class="prev" rel="prev" title="PIE算法"><i class="fas fa-angle-left fa-fw"></i>PIE算法</a></div>
 </div>
 <div id="comments"></div></article></div>
-            </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.78.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Lraxer</a></span></div>
-        </div>
-    </footer></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.84.4">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreffer" title="DoIt 0.2.10"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer">Lraxer</a></span></div>
+        </div></footer></div>
 
-        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
-                <i class="fas fa-arrow-up fa-fw"></i>
-            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
-                <i class="fas fa-comment fa-fw"></i>
-            </a>
-        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+    <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+
 </html>

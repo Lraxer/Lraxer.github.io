@@ -6,37 +6,37 @@
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 30 Nov 2020 15:21:44 &#43;0800</lastBuildDate><atom:link href="http://Lraxer.github.io/posts/" rel="self" type="application/rss+xml" /><item>
     <title>On-Off Sketch</title>
     <link>http://Lraxer.github.io/2020/11/on-off-sketch/</link>
-    <pubDate>Mon, 30 Nov 2020 15:21:44 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/on-off-sketch/</guid>
+    <pubDate>Mon, 30 Nov 2020 15:21:44 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/on-off-sketch/</guid>
     <description><![CDATA[简介 On-Off sketch是一个做persisence estimation和finding persistent items的算法。根据论文的介绍，这是第一个专门处理pe]]></description>
 </item><item>
     <title>PIE算法</title>
     <link>http://Lraxer.github.io/2020/11/pie/</link>
-    <pubDate>Sun, 29 Nov 2020 20:30:05 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/pie/</guid>
+    <pubDate>Sun, 29 Nov 2020 20:30:05 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/pie/</guid>
     <description><![CDATA[简介 PIE算法使用Space-Time Bloom Filter(STBF)和Raptor Code，寻找persistent items。 我只读了算法的过]]></description>
 </item><item>
     <title>Small-Space算法</title>
     <link>http://Lraxer.github.io/2020/11/small-space/</link>
-    <pubDate>Sun, 29 Nov 2020 09:30:05 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/small-space/</guid>
+    <pubDate>Sun, 29 Nov 2020 09:30:05 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/small-space/</guid>
     <description><![CDATA[简介 Small-Space算法主要用来做finding persistent item。 只读了算法过程，没有读参数的数值选择和数学证明。 Small-Space算法]]></description>
 </item><item>
     <title>显示效果测试</title>
     <link>http://Lraxer.github.io/2020/11/%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95/</link>
-    <pubDate>Sat, 21 Nov 2020 16:25:09 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95/</guid>
+    <pubDate>Sat, 21 Nov 2020 16:25:09 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/%E6%98%BE%E7%A4%BA%E6%95%88%E6%9E%9C%E6%B5%8B%E8%AF%95/</guid>
     <description><![CDATA[显示效果测试 1 2 3 4 5 6 #include &lt;iostream&gt; int main() { std::cout &lt;&lt; &#34;Hello world!&#34; &lt;&lt; endl; return 0; } ==HIGHLIGHT== (not working) 标题 折叠内容 $$ {\color{red}E}={\color{blue}mc^2} $$ 矩阵和其他环境必须写到一行，反斜线必须是双倍的。 $$ A = \begin{bmatrix} a_{i1}^1 &amp; a_{i1}^2 &amp;]]></description>
 </item><item>
     <title>Hello</title>
     <link>http://Lraxer.github.io/2020/11/hello/</link>
-    <pubDate>Sat, 21 Nov 2020 10:39:09 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>http://Lraxer.github.io/2020/11/hello/</guid>
+    <pubDate>Sat, 21 Nov 2020 10:39:09 &#43;0800</pubDate><author>
+        <name>Lraxer</name>
+    </author><guid>http://Lraxer.github.io/2020/11/hello/</guid>
     <description><![CDATA[Hello This is the first post. 一级目录 二级目录 三级目录 四级目录 五级目录 六级目录]]></description>
 </item></channel>
 </rss>
