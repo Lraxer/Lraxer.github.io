@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pacman常用命令 - Lraxer&#39;s Blog</title><meta name="Description" content="My personal blog"><meta property="og:title" content="Pacman常用命令" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" /><meta property="og:image" content="http://Lraxer.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-16T15:29:16+08:00" />
+<meta property="article:modified_time" content="2021-07-16T23:00:52+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://Lraxer.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Pacman常用命令"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="Lraxer&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="Lraxer&#39;s Blog">
+
+<meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" /><link rel="prev" href="http://Lraxer.github.io/2020/11/on-off-sketch/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Pacman常用命令",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/Lraxer.github.io\/2021\/07\/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4\/"
+        },"genre": "posts","keywords": "Linux","wordcount":  2505 ,
+        "url": "http:\/\/Lraxer.github.io\/2021\/07\/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4\/","datePublished": "2021-07-16T15:29:16+08:00","dateModified": "2021-07-16T23:00:52+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Lraxer"
+            },"description": ""
+    }
+    </script></head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme);}
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {
+            const metas = document.getElementsByTagName('meta');
+            for (let i = 0; i < metas.length; i++)
+                if (metas[i].getAttribute('name') === metaName)
+                    return metas[i];
+            return '';
+        }
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let themeColorMeta = getMeta('theme-color');
+        if (document.body.getAttribute('theme') != 'light') themeColorMeta.content = '#000000';
+    </script>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Lraxer&#39;s Blog">Lraxer&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" onclick="return false;" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" onclick="return false;" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" onclick="return false;" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="#" onclick="return false;" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><div class="toc" id="toc-auto">
+        <h2 class="toc-title">目录</h2>
+        <div class="toc-content" id="toc-content-auto"></div>
+    </div><script>document.body.setAttribute("pageStyle", "normal")</script><script>document.body.setAttribute("autoTOC", "true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Pacman常用命令</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="author fas fa-user-circle fa-fw"></i>Lraxer</a>
+                </span>&nbsp;<span class="post-category">收录于 <a href="/categories/linux/"><i class="far fa-folder fa-fw"></i>Linux</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-16">2021-07-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2505 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#pacman简介">pacman简介</a></li>
+    <li><a href="#命令格式">命令格式</a></li>
+    <li><a href="#常用命令">常用命令</a>
+      <ul>
+        <li><a href="#选取中国地区合适的源">选取中国地区合适的源</a></li>
+        <li><a href="#更新软件和系统">更新软件和系统</a></li>
+        <li><a href="#安装软件包">安装软件包</a></li>
+        <li><a href="#删除软件包">删除软件包</a></li>
+        <li><a href="#搜索软件包">搜索软件包</a></li>
+        <li><a href="#清理软件包">清理软件包</a></li>
+      </ul>
+    </li>
+    <li><a href="#operations">Operations</a></li>
+    <li><a href="#options">Options</a>
+      <ul>
+        <li><a href="#通用">通用</a></li>
+        <li><a href="#transaction-options--s--r-and--u">Transaction Options (-S, -R and -U)</a></li>
+        <li><a href="#upgrade-options--s--u">Upgrade Options (-S, -U)</a></li>
+        <li><a href="#query-options--q">Query Options (-Q)</a></li>
+        <li><a href="#remove-options--r">Remove Options (-R)</a></li>
+        <li><a href="#sync-options--s">Sync Options (-S)</a></li>
+        <li><a href="#database-options--d">Database Options (-D)</a></li>
+        <li><a href="#file-options--f">File Options (-F)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="pacman简介">pacman简介</h2>
+<p>pacman是Arch Linux下的软件包管理器。与Ubuntu等系统下常用的apt，apt-get不同，pacman有一套比较特别的命令，下面对常用的命令做一个总结。</p>
+<h2 id="命令格式">命令格式</h2>
+<p>pacman的命令格式非常统一，都是</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo pacman &lt;operation&gt; <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>targets<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>&lt;operation&gt;</code> 代表一个主要动作，包括有 <code>DQRSTUFVh</code> 这几个。对于这些动作，还有一些 <code>[options]</code> 参数，可以应用于全部或者部分动作。后面列出一些常用的操作和一些可选参数，没有提及那些容易使用出错的。</p>
+<h2 id="常用命令">常用命令</h2>
+<h3 id="选取中国地区合适的源">选取中国地区合适的源</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo pacman-mirrors -i -c China -m rank
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="更新软件和系统">更新软件和系统</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo pacman -Syu
+sudo pacman -Syu &lt;package&gt; <span class="c1"># 更新package list, 更新所有软件包, 然后安装软件包&lt;package&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="安装软件包">安装软件包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo pacman -S &lt;pkg&gt; <span class="c1"># 从同步数据库安装</span>
+
+sudo pacman -U /home/user/ceofhack-0.6-1-x86_64.pkg.tar.gz <span class="c1"># 从本地路径安装软件包</span>
+sudo pacman -U http://www.example.com/repo/example.pkg.tar.xz <span class="c1"># 从URL安装软件包</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="删除软件包">删除软件包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo pacman -Rsc &lt;package&gt; <span class="c1"># 删除&lt;package&gt;、所有依赖它的软件包、仅有它依赖的软件包</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="搜索软件包">搜索软件包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">pacman -Ss &lt;package&gt; <span class="c1"># 在同步数据库中搜索符合正则表达式的软件包</span>
+pacman -Qs &lt;package&gt; <span class="c1"># 搜索已经安装的软件包</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="清理软件包">清理软件包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo pacman -Sc <span class="c1"># 清理未安装的包缓存</span>
+sudo pacman -Qtdq <span class="p">|</span> sudo pacman -Rs - <span class="c1"># 删除孤儿包</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="operations">Operations</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">operations</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>-D, --database</code></td>
+<td>对pacman数据库进行修改。需要配合其他参数。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-Q, --query</code></td>
+<td>查询<strong>本地软件包数据库</strong>。可以查单个包也可以查所有包（缺省包名时）的信息。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-R, --remove</code></td>
+<td>删除包（或者是group）。指定&ndash;nosave可以同时去除保存为.packsave的配置文件。（这里存疑，没明白数据库里这些文件的意义）</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-S, --sync</code></td>
+<td>从<strong>同步数据库</strong>安装包和所有依赖。可以这样指定版本：<code>pacman -S &quot;bash&gt;=3.2&quot;</code>（必须有双引号）还有很多 <code>[options]</code> 可以与这个动作配合使用</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-T, --deptest</code></td>
+<td>依赖检查。返回一个现在系统尚未满足的依赖列表。 <code>-T</code> 没有其他子选项。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-U, --upgrade</code></td>
+<td>通过URL或者本地路径安装包，而不是从pacman配置的源里。执行过程为&quot;remove-then-add&quot;。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-F, --files</code></td>
+<td>查询文件数据库。查看一个软件包是否包含特定文件，或者显示包含特定文件的软件包。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-V, --version</code></td>
+<td>显示版本。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>-h, --help</code></td>
+<td>查看帮助。例如：<code>pacman -Q --help</code> 查看 <code>-Q</code> 动作的子选项</td>
+</tr>
+</tbody>
+</table>
+<h2 id="options">Options</h2>
+<h3 id="通用">通用</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-v, --verbose</code></td>
+<td>输出pacman的配置信息。（文件目录等）</td>
+</tr>
+<tr>
+<td><code>--debug</code></td>
+<td>输出debug messages。</td>
+</tr>
+<tr>
+<td><code>--nocomfirm</code></td>
+<td>跳过所有&quot;Are you sure?&quot;。<strong>只在使用脚本的时候建议这么做。需要手动开启关闭。</strong></td>
+</tr>
+<tr>
+<td>&ndash;confirm</td>
+<td>取消&ndash;nocomfirm。</td>
+</tr>
+<tr>
+<td><code>--disable-download-timeout</code></td>
+<td>关闭下载的timeout。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transaction-options--s--r-and--u">Transaction Options (-S, -R and -U)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--noprogressbar</code></td>
+<td>不显示下载进度条。<strong>适合编写脚本。</strong></td>
+</tr>
+<tr>
+<td><code>-p, --print</code></td>
+<td>Only print the targets instead of performing the actual operation (sync, remove or upgrade). Use &ndash;print-format to specify how targets are displayed. The default format string is &ldquo;%l&rdquo;, which displays URLs with -S, file names with -U, and pkgname-pkgver with -R.</td>
+</tr>
+<tr>
+<td><code>--print-format &lt;format&gt;</code></td>
+<td>Specify a printf-like format to control the output of the &ndash;print operation. The possible attributes are: &ldquo;%n&rdquo; for pkgname, &ldquo;%v&rdquo; for pkgver, &ldquo;%l&rdquo; for location, &ldquo;%r&rdquo; for repository, and &ldquo;%s&rdquo; for size. Implies &ndash;print.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="upgrade-options--s--u">Upgrade Options (-S, -U)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--asdeps</code></td>
+<td>非显式地安装软件包，将其看作一个依赖关系安装。</td>
+</tr>
+<tr>
+<td><code>--asexplicit</code></td>
+<td>显式安装软件包。将一个软件包显式安装，就不会被删除时的 <code>--recursive</code> 删除。</td>
+</tr>
+<tr>
+<td><code>--ignore &lt;package&gt;</code></td>
+<td>忽略更新个别软件包。多个包以逗号分隔。</td>
+</tr>
+<tr>
+<td><code>--ignoregroup &lt;group&gt;</code></td>
+<td>忽略更新group。多个groups以逗号分隔。</td>
+</tr>
+<tr>
+<td><code>--needed</code></td>
+<td>不要重新安装已经更新的软件包。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="query-options--q">Query Options (-Q)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c, --changelog</code></td>
+<td>查看软件包的ChangeLog（如果有的话）</td>
+</tr>
+<tr>
+<td><code>-d, --deps</code></td>
+<td>限制查询范围，只过滤<strong>作为依赖安装的软件包</strong>。配合 <code>-t</code> 选项使用可以过滤不被任何已安装的软件包所依赖的包。</td>
+</tr>
+<tr>
+<td><code>-e, --explicit</code></td>
+<td>限制查询范围，只过滤<strong>显式安装的软件包</strong>。配合 <code>-t</code> 选项使用可以过滤不被其他软件包要求安装的包。</td>
+</tr>
+<tr>
+<td><code>-g, --groups</code></td>
+<td>列出一个group中的所有软件包。如果没有指明名称，就列出所有groups的软件包。</td>
+</tr>
+<tr>
+<td><code>-i, --info</code></td>
+<td>列出给定软件包的信息。</td>
+</tr>
+<tr>
+<td><code>-k, --check</code></td>
+<td>检查系统中是否有指定软件包的全部文件。</td>
+</tr>
+<tr>
+<td><code>-l, --list</code></td>
+<td>列出给定软件包的全部文件。可以给定多个软件包。</td>
+</tr>
+<tr>
+<td><code>-m, --foreign</code></td>
+<td>只过滤<strong>同步数据库找不到的软件包</strong>。一般都是使用 <code>-U</code> 手动安装的软件包。</td>
+</tr>
+<tr>
+<td><code>-n, --native</code></td>
+<td>只过滤<strong>同步数据库能找到的软件包</strong>。与 <code>-m</code> 相反。</td>
+</tr>
+<tr>
+<td><code>-o, --owns &lt;file&gt;</code></td>
+<td>查询带有特定文件的软件包。文件可以指定多个。</td>
+</tr>
+<tr>
+<td><code>-p, --file</code></td>
+<td>Signifies that the package supplied on the command line is a file and not an entry in the database. The file will be decompressed and queried. This is useful in combination with <em>&ndash;info</em> and <em>&ndash;list</em>. <strong>不知道能做什么，应该是可以配合 <code>-i</code> 之类的参数查询package file的信息。</strong></td>
+</tr>
+<tr>
+<td><code>-q, --quiet</code></td>
+<td>显示更少的查询结果信息。<strong>适合脚本编程使用。</strong></td>
+</tr>
+<tr>
+<td><code>-s, --search &lt;regexp&gt;</code></td>
+<td>搜索名称或者描述符合正则表达式的<strong>本地已安装软件包</strong>。有多个搜索条件时，返回全都匹配的软件包。</td>
+</tr>
+<tr>
+<td><code>-t, --unrequired</code></td>
+<td>过滤<strong>不被已安装的所有软件包所需要的包(directly or optionally)</strong>。指定这个选项两次，可以过滤可选的包。(optionally)</td>
+</tr>
+<tr>
+<td><code>-u, --upgrades</code></td>
+<td>过滤<strong>当前系统上过时的软件包</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="remove-options--r">Remove Options (-R)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c, --cascade</code></td>
+<td>删除目标软件包，并<strong>递归删除所有依赖这些包的软件包</strong>。</td>
+</tr>
+<tr>
+<td><code>-n, --nosave</code></td>
+<td>忽略配置文件的备份名称。(Instructs pacman to ignore file backup designations.)</td>
+</tr>
+<tr>
+<td><code>-s, --recursive</code></td>
+<td>删除目标软件包和它的依赖项。被删除的依赖项满足：（1）它们不被其他软件包依赖；（2）不是被用户显式安装的。想要移除第二个条件，传递两次这个参数。</td>
+</tr>
+<tr>
+<td><code>-u, --unneeded</code></td>
+<td>移除目标软件包，以及不被其他软件包所需要的包。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sync-options--s">Sync Options (-S)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c, --clean</code></td>
+<td>从缓存中删除没有安装的软件包和未使用的同步数据库，以释放空间。</td>
+</tr>
+<tr>
+<td><code>-g, --groups</code></td>
+<td>显示指定group的所有软件包成员。如果没有提供group name，列出所有groups；传递两次这个参数查看所有groups和它们的成员。</td>
+</tr>
+<tr>
+<td><code>-i, --info</code></td>
+<td>显示一个给定的同步数据库软件包信息。 Passing two <em>&ndash;info</em> or <em>-i</em> flags will also display those packages in all repositories that depend on this package.</td>
+</tr>
+<tr>
+<td><code>-l, --list</code></td>
+<td>列出指定仓库的所有软件包。可以给定多个仓库。</td>
+</tr>
+<tr>
+<td><code>-q, --quiet</code></td>
+<td>显示较少的信息。<strong>适合脚本编程。</strong></td>
+</tr>
+<tr>
+<td><code>-s, --search &lt;regexp&gt;</code></td>
+<td>在同步数据库中搜索匹配的软件包。</td>
+</tr>
+<tr>
+<td><code>-u, --sysupgrade</code></td>
+<td>升级所有过期软件包。传递这个参数两次可以启用降级。也可以手动指定额外的升级/安装目标。</td>
+</tr>
+<tr>
+<td><code>-y, --refresh</code></td>
+<td>从 <code>pacman.conf</code> 服务器设置的服务器下载数据库副本。传递这个参数两次可以强制更新。这个参数应当和 <code>-u</code> 一起使用，否则可能会有依赖问题。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="database-options--d">Database Options (-D)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--asdeps &lt;package&gt;</code></td>
+<td>将一个软件包标记为非显式安装。（即作为依赖安装）</td>
+</tr>
+<tr>
+<td><code>--asexplicit &lt;package&gt;</code></td>
+<td>将一个软件包标记为显式安装。</td>
+</tr>
+<tr>
+<td><code>-k, --check</code></td>
+<td>检查本地软件包数据库的内部一致性(internally consistent)。(This will check all required files are present and that installed packages have the required dependencies, do not conflict and that multiple packages do not own the same file. )传递这个参数两次将检查同步数据库。</td>
+</tr>
+<tr>
+<td><code>-q, --quiet</code></td>
+<td>不显示成功完成的数据库操作。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="file-options--f">File Options (-F)</h3>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-y, --refresh</code></td>
+<td>从服务器下载最新的软件包数据库。传递这个参数两次可以强制更新。</td>
+</tr>
+<tr>
+<td><code>-l, --list</code></td>
+<td>列出被查询软件包拥有的文件。</td>
+</tr>
+<tr>
+<td><code>-x, --regex</code></td>
+<td>将查询解释为正则表达式。</td>
+</tr>
+<tr>
+<td><code>-q, --quiet</code></td>
+<td>显示更少的消息。</td>
+</tr>
+<tr>
+<td><code>--machinereadable</code></td>
+<td>显示更适合机器读取的消息。The format is <em>repository\0pkgname\0pkgver\0path\n</em> with <em>\0</em> being the NULL character and <em>\n</em> a linefeed.</td>
+</tr>
+</tbody>
+</table></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-07-16</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.md" target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="#" onclick="return false;" title="分享到 Twitter" data-sharer="twitter" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-title="Pacman常用命令" data-hashtags="Linux"><i class="fab fa-twitter fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Facebook" data-sharer="facebook" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-hashtag="Linux"><i class="fab fa-facebook-square fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-title="Pacman常用命令" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Line" data-sharer="line" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-title="Pacman常用命令"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="#" onclick="return false;" title="分享到 微博" data-sharer="weibo" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-title="Pacman常用命令"><i class="fab fa-weibo fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Blogger" data-sharer="blogger" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-title="Pacman常用命令" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="#" onclick="return false;" title="分享到 Evernote" data-sharer="evernote" data-url="http://Lraxer.github.io/2021/07/pacman%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-title="Pacman常用命令"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/linux/">Linux</a></section>
+        <section>
+            <span><a href="#" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2020/11/on-off-sketch/" class="prev" rel="prev" title="On-Off Sketch"><i class="fas fa-angle-left fa-fw"></i>On-Off Sketch</a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.84.4">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreffer" title="DoIt 0.2.10"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank" rel="noopener noreferrer">Lraxer</a></span></div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+
+</html>
